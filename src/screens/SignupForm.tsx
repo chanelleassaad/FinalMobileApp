@@ -10,7 +10,6 @@ const SignupForm = ({navigation}) => {
   };
 
   const handleSignup = async ({email, password}: IUser) => {
-    console.log(email);
     try {
       const user = await signUpUser({email, password});
       setErrorMessage(user.message);

@@ -9,8 +9,7 @@ const UnauthNav = () => {
   return (
     <UnauthenticatedNavigator.Navigator
       screenOptions={{
-        headerTitle: 'CA Mobile App',
-        headerBackTitleVisible: false,
+        headerShown: false,
       }}>
       <UnauthenticatedNavigator.Screen name="Login" component={LoginForm} />
       <UnauthenticatedNavigator.Screen name="Signup" component={SignupForm} />

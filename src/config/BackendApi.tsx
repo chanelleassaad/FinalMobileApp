@@ -18,6 +18,7 @@ export const loginUser = async ({email, password}: IUser) => {
       password: password,
     };
     const response = await api.post('/login', user);
+
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

@@ -1,15 +1,12 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  Pressable,
-  SafeAreaView,
-} from 'react-native';
+import {StyleSheet, Text, Pressable, View, Image} from 'react-native';
+import InputField from '../molecules/InputField';
+import ButtonWithMessage from '../molecules/ButtonWithMessage';
 
 const AuthForm = ({type, onSubmit, onNavigate, errorMessage}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleAction = () => {
     onSubmit({email, password});
@@ -19,36 +16,39 @@ const AuthForm = ({type, onSubmit, onNavigate, errorMessage}) => {
     onNavigate();
   };
 
+  const isButtonDisabled = !email || !password || loading;
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>{type === 'login' ? 'Login' : 'Sign Up'}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
+    <View style={styles.container}>
+      <Image
+        style={styles.image}
+        source={{
+          uri: 'https://static.vecteezy.com/system/resources/previews/027/460/934/original/bookshelf-cloud-clipart-transparent-background-generative-ai-free-png.png',
+        }}
+      />
+
+      <InputField
+        label="Email"
         value={email}
         onChangeText={setEmail}
-        autoCorrect={false}
-        autoCapitalize="none"
+        placeholder="Enter your email"
       />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
+      <InputField
+        label="Password"
         value={password}
         onChangeText={setPassword}
-        autoCorrect={false}
-        autoCapitalize="none"
+        placeholder="Enter your password"
+        secureTextEntry
       />
 
-      <Pressable style={styles.button} onPress={handleAction}>
-        <Text style={styles.buttonText}>
-          {type === 'login' ? 'LOGIN' : 'SIGN UP'}
-        </Text>
-      </Pressable>
-      {errorMessage ? (
-        <Text style={styles.errorText}>{errorMessage}</Text>
-      ) : null}
+      <ButtonWithMessage
+        handleOnPress={handleAction}
+        isButtonDisabled={isButtonDisabled}
+        label={type === 'login' ? 'LOGIN' : 'SIGN UP'}
+        errorMessage={errorMessage}
+      />
+
       <Text style={styles.footerText}>
         {type === 'login'
           ? "Don't Have an Account?"
@@ -59,62 +59,32 @@ const AuthForm = ({type, onSubmit, onNavigate, errorMessage}) => {
           </Text>
         </Pressable>
       </Text>
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default AuthForm;
 
 const styles = StyleSheet.create({
+  image: {
+    height: 300,
+    width: 300,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 40,
-    marginTop: -50,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    marginBottom: 40,
-    color: '#0096FF',
-  },
-  input: {
-    height: 50,
-    width: '100%',
-    paddingHorizontal: 20,
-    borderColor: '#0096FF',
-    borderWidth: 1,
-    borderRadius: 7,
-    marginBottom: 15,
-  },
-  button: {
-    backgroundColor: '#0096FF',
-    height: 45,
-    width: '100%',
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
+    backgroundColor: '#21618C',
   },
   footerText: {
     marginTop: 20,
     textAlign: 'center',
-    color: 'gray',
+    color: 'white',
   },
   signup: {
-    color: '#0096FF',
+    color: '#AED6F1',
     fontSize: 13,
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 14,
-    marginTop: 10,
-    textAlign: 'center',
+    textDecorationLine: 'underline',
   },
 });
