@@ -48,7 +48,7 @@ const NewsScreen = () => {
     }
   };
 
-  const renderItem = ({item}) => <NewsPost item={item} />;
+  const renderItem = ({item}) => <NewsPost post={item} />;
 
   if (loading && allPosts.length === 0) {
     return <ActivityIndicator />;
