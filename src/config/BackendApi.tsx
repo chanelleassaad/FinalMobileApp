@@ -49,11 +49,11 @@ export const refreshAccessToken = async ({
 };
 
 export const getPosts =
-  (userToken, updateAccessToken: (accessToken: string) => void) =>
+  (userToken, page, updateAccessToken: (accessToken: string) => void) =>
   async (dispatch: Dispatch<any>) => {
     try {
       dispatch(getPostsStart());
-      const response = await api.get(`/posts?page=${1}&limit=${15}`, {
+      const response = await api.get(`/posts?page=${page}&limit=${15}`, {
         headers: {
           Authorization: `Bearer ${userToken.accessToken}`,
         },
