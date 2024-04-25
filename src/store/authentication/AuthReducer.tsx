@@ -18,6 +18,14 @@ const authReducer = (prevState, action) => {
         isSignout: true,
         userToken: null,
       };
+    case 'UPDATE_ACCESS_TOKEN':
+      return {
+        ...prevState,
+        userToken: {
+          ...prevState.userToken,
+          accessToken: action.accessToken,
+        },
+      };
     default:
       return prevState;
   }

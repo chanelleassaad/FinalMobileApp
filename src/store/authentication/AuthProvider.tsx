@@ -27,20 +27,26 @@ const AuthProvider = ({children}) => {
     bootstrapAsync();
   }, []);
 
-  const authContext = useMemo(
-    () => ({
-      signIn: async (email, accessToken, refreshToken) => {
-        const token = {email, accessToken, refreshToken};
-        await Keychain.setGenericPassword('userToken', JSON.stringify(token));
-        dispatch({type: 'SIGN_IN', token});
-      },
-      signOut: async () => {
-        await Keychain.resetGenericPassword();
-        dispatch({type: 'SIGN_OUT'});
-      },
-    }),
-    [],
-  );
+  const authContext = useMemo(() => ({
+    signIn: async (email, accessToken, refreshToken) => {
+      const token = {email, accessToken, refreshToken};
+      await Keychain.setGenericPassword('userToken', JSON.stringify(token));
+      dispatch({type: 'SIGN_IN', token});
+    },
+    signOut: async () => {
+      await Keychain.resetGenericPassword();
+      dispatch({type: 'SIGN_OUT'});
+    },
+    updateAccessToken: async accessToken => {
+      const {email, refreshToken} = state.userToken;
+      const updatedToken = {email, accessToken, refreshToken};
+      await Keychain.setGenericPassword(
+        'userToken',
+        JSON.stringify(updatedToken),
+      );
+      dispatch({type: 'UPDATE_ACCESS_TOKEN', accessToken});
+    },
+  }));
 
   return (
     <AuthContext.Provider value={{...state, ...authContext}}>
