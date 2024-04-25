@@ -23,7 +23,7 @@ function App(): React.JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#21618C',
+    backgroundColor: '#2c4d92',
   },
 });
 

@@ -32,7 +32,7 @@ export default ButtonWithMessage;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'white',
+    backgroundColor: '#21618C',
     height: 50,
     width: '100%',
     borderRadius: 10,
@@ -41,10 +41,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   disabledButton: {
-    backgroundColor: '#CCCCCC',
+    backgroundColor: '#99A3A4',
   },
   buttonText: {
-    color: '#21618C',
+    color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
   },

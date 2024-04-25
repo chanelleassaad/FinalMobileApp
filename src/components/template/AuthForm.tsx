@@ -22,9 +22,8 @@ const AuthForm = ({type, onSubmit, onNavigate, errorMessage}) => {
     <View style={styles.container}>
       <Image
         style={styles.image}
-        source={{
-          uri: 'https://static.vecteezy.com/system/resources/previews/027/460/934/original/bookshelf-cloud-clipart-transparent-background-generative-ai-free-png.png',
-        }}
+        source={require('../../assets/icon.png')}
+        resizeMode="contain"
       />
 
       <InputField
@@ -75,15 +74,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 40,
-    backgroundColor: '#21618C',
+    backgroundColor: '#D0D3D4',
   },
   footerText: {
     marginTop: 20,
     textAlign: 'center',
-    color: 'white',
+    color: '#424949',
   },
   signup: {
-    color: '#AED6F1',
+    color: '#21618C',
     fontSize: 13,
     textDecorationLine: 'underline',
   },
