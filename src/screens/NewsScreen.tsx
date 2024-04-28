@@ -15,8 +15,6 @@ const NewsScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchPosts = useCallback(async () => {
-    console.log(page);
-
     await dispatch(getPosts(userToken, page, updateAccessToken));
     setLoadingMore(false);
   }, [dispatch, page]);
@@ -36,10 +34,9 @@ const NewsScreen = () => {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    setAllPosts([]);
-    await setPage(1);
-    fetchPosts();
-  }, [fetchPosts]);
+    await setAllPosts([]);
+    setPage(1);
+  }, []);
 
   const onEndReached = () => {
     if (!loadMore && posts.pagination && posts.pagination.hasNextPage) {
