@@ -1,4 +1,7 @@
-const authReducer = (prevState, action) => {
+const authReducer = (
+  prevState: {userToken: any},
+  action: {type: any; token: any; accessToken: any},
+) => {
   switch (action.type) {
     case 'RESTORE_TOKEN':
       return {
