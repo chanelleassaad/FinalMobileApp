@@ -5,7 +5,7 @@ import {
   getPostsSuccess,
   getPostsFailure,
 } from '../store/PostsReducer';
-import {IUserToken} from '../data/UserTokenInterface';
+import {IUserToken} from '../interfaces/UserTokenInterface';
 
 export const getPosts =
   (

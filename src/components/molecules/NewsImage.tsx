@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import RefreshIndicator from '../atoms/RefreshIndicator';
-import {IResult} from '../../data/RootInterface';
+import {IResult} from '../../interfaces/RootInterface';
 
 const NewsImage = ({post}: {post: IResult}) => {
   const [isLoading, setIsLoading] = useState(true);

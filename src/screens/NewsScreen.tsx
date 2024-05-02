@@ -5,7 +5,7 @@ import NewsPost from '../components/organisms/NewsPost';
 import {useAuth} from '../store/authentication/AuthContext';
 import {getPosts} from '../config/PostsApi';
 import {ThunkDispatch} from '@reduxjs/toolkit';
-import {IResult} from '../data/RootInterface';
+import {IResult} from '../interfaces/RootInterface';
 
 const NewsScreen = () => {
   const dispatch = useDispatch();

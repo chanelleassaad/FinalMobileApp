@@ -2,7 +2,7 @@ import moment from 'moment';
 import React from 'react';
 import {Text, Image, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {IResult} from '../../data/RootInterface';
+import {IResult} from '../../interfaces/RootInterface';
 
 const NewsPostGradient = ({post}: {post: IResult}) => {
   return (

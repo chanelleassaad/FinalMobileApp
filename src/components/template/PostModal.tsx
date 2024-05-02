@@ -11,7 +11,7 @@ import {
   Linking,
 } from 'react-native';
 import RefreshIndicator from '../atoms/RefreshIndicator';
-import {IResult} from '../../data/RootInterface';
+import {IResult} from '../../interfaces/RootInterface';
 
 interface IProps {
   isVisible: boolean;

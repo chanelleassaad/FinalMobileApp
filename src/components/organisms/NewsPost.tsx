@@ -3,7 +3,7 @@ import {StyleSheet, TouchableOpacity, Platform, Animated} from 'react-native';
 import NewsPostGradient from '../molecules/NewsPostGradient';
 import NewsImage from '../molecules/NewsImage';
 import PostModal from '../template/PostModal';
-import {IResult} from '../../data/RootInterface';
+import {IResult} from '../../interfaces/RootInterface';
 
 const NewsPost = ({post}: {post: IResult}) => {
   const [animation] = useState(new Animated.Value(1));
