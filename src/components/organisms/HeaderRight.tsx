@@ -15,7 +15,12 @@ const HeaderRight = ({onPress}: IProps) => {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={onPress}>
-        <Ionicons name="person" size={24} color="black" />
+        <Ionicons
+          name="person"
+          size={24}
+          color="white"
+          selectionColor={'#bfcdea'}
+        />
       </TouchableOpacity>
     </View>
   );

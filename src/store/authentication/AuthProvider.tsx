@@ -40,8 +40,8 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
         dispatch(signOut());
       },
       updateAccessToken: async (accessToken: string) => {
-        const {email, refreshToken} = userToken;
-        const updatedToken = {email, accessToken, refreshToken};
+        const {refreshToken} = userToken;
+        const updatedToken = {accessToken, refreshToken};
         await Keychain.setGenericPassword(
           'userToken',
           JSON.stringify(updatedToken),

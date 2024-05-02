@@ -36,45 +36,47 @@ const NewsPopup = ({isVisible, post, toggleModal}: IProps) => {
             {post.title}
           </Text>
         </View>
-        <View style={styles.imageContainer}>
-          {post.image_url && (
-            <>
-              {isLoading && <RefreshIndicator />}
-              <Image
-                source={{uri: post.image_url, cache: 'force-cache'}}
-                resizeMode="cover"
-                style={styles.imageDisplay}
-                onLoadEnd={() => setIsLoading(false)}
-              />
-            </>
+        <View style={styles.allData}>
+          <View style={styles.imageContainer}>
+            {post.image_url && (
+              <>
+                {isLoading && <RefreshIndicator />}
+                <Image
+                  source={{uri: post.image_url, cache: 'force-cache'}}
+                  resizeMode="cover"
+                  style={styles.imageDisplay}
+                  onLoadEnd={() => setIsLoading(false)}
+                />
+              </>
+            )}
+          </View>
+          <View style={styles.details}>
+            {post.creator && post.creator[0] !== '' && (
+              <Text style={styles.creator}>by {post.creator.join(', ')}</Text>
+            )}
+            {post.pubDate && (
+              <Text style={styles.pubDate}>
+                {new Date(post.pubDate).toLocaleDateString()}
+              </Text>
+            )}
+          </View>
+          {post.description && (
+            <ScrollView style={styles.descriptionContainer}>
+              <Text
+                style={[
+                  styles.description,
+                  {textAlign: isArabic ? 'right' : 'left'},
+                ]}>
+                {post.description.replace(/nbsp;/g, '')}
+              </Text>
+            </ScrollView>
           )}
-        </View>
-        <View style={styles.details}>
-          {post.creator && post.creator[0] !== '' && (
-            <Text style={styles.creator}>by {post.creator.join(', ')}</Text>
-          )}
-          {post.pubDate && (
-            <Text style={styles.pubDate}>
-              {new Date(post.pubDate).toLocaleDateString()}
-            </Text>
-          )}
-        </View>
-        {post.description && (
-          <ScrollView style={styles.descriptionContainer}>
-            <Text
-              style={[
-                styles.description,
-                {textAlign: isArabic ? 'right' : 'left'},
-              ]}>
-              {post.description.replace(/nbsp;/g, '')}
-            </Text>
-          </ScrollView>
-        )}
-        <View style={styles.moreDetails}>
-          <Text>More details on</Text>
-          <TouchableOpacity onPress={() => Linking.openURL(post.link)}>
-            <Text style={styles.link}>{post.link}</Text>
-          </TouchableOpacity>
+          <View style={styles.moreDetails}>
+            <Text>More details on</Text>
+            <TouchableOpacity onPress={() => Linking.openURL(post.link)}>
+              <Text style={styles.link}>{post.link}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
@@ -95,6 +97,12 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 10,
     marginBottom: 10,
+    borderRadius: 5,
+  },
+  allData: {
+    backgroundColor: '#bfcdea',
+    height: '83%',
+    padding: 20,
   },
   title: {
     fontSize: 20,
@@ -134,7 +142,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   moreDetails: {
-    marginTop: 20,
+    flex: 1,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   link: {
     fontSize: 14,

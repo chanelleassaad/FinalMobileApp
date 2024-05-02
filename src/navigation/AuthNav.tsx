@@ -24,6 +24,8 @@ const AuthNav = () => {
           component={NewsScreen}
           options={{
             headerRight: headerUser,
+            headerTintColor: 'white',
+            headerStyle: {backgroundColor: 'rgba(37, 100, 235, 1)'},
           }}
         />
       </Tab.Navigator>
