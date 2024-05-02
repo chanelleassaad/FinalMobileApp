@@ -1,21 +1,27 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Text, ActivityIndicator, FlatList, RefreshControl} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {getPosts} from '../config/BackendApi';
-import {useAuth} from '../store/authentication/AuthContext';
 import NewsPost from '../components/organisms/NewsPost';
+import {useAuth} from '../store/authentication/AuthContext';
+import {getPosts} from '../config/PostsApi';
+import {ThunkDispatch} from '@reduxjs/toolkit';
+import {IResult} from '../data/RootInterface';
 
 const NewsScreen = () => {
   const dispatch = useDispatch();
   const {posts, loading, error} = useSelector((state: any) => state.posts);
-  const {userToken, updateAccessToken} = useAuth();
+  const {userToken} = useSelector((state: any) => state.auth);
+  const {updateAccessToken} = useAuth();
+
   const [page, setPage] = useState(1);
   const [allPosts, setAllPosts] = useState([]);
   const [loadMore, setLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchPosts = useCallback(async () => {
-    await dispatch(getPosts(userToken, page, updateAccessToken));
+    await (dispatch as ThunkDispatch<any, any, any>)(
+      getPosts(userToken, page, updateAccessToken),
+    );
     setLoadingMore(false);
   }, [dispatch, page]);
 
@@ -45,7 +51,8 @@ const NewsScreen = () => {
     }
   };
 
-  const renderItem = ({item}) => <NewsPost post={item} />;
+  const renderItem = ({item}: {item: IResult}) => <NewsPost post={item} />;
+  const renderLoadMore = () => loadMore && <ActivityIndicator />;
 
   if (loading && allPosts.length === 0) {
     return <ActivityIndicator />;
@@ -62,7 +69,7 @@ const NewsScreen = () => {
       keyExtractor={item => item._id.toString()}
       onEndReachedThreshold={0.1}
       onEndReached={onEndReached}
-      ListFooterComponent={() => loadMore && <ActivityIndicator />}
+      ListFooterComponent={renderLoadMore}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }

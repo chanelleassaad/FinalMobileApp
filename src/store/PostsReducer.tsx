@@ -22,10 +22,15 @@ const postsSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    resetPosts: state => {
+      state.posts = [];
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 
-export const {getPostsStart, getPostsSuccess, getPostsFailure} =
+export const {getPostsStart, getPostsSuccess, getPostsFailure, resetPosts} =
   postsSlice.actions;
 
 export default postsSlice.reducer;

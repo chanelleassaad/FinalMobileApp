@@ -1,55 +1,18 @@
-import axios from 'axios';
 import {Dispatch} from 'react';
+import {api, refreshAccessToken} from './UserApi';
 import {
   getPostsStart,
   getPostsSuccess,
   getPostsFailure,
 } from '../store/PostsReducer';
-
-const baseUrl = 'https://backend-practice.euriskomobility.me/';
-
-const api = axios.create({
-  baseURL: baseUrl,
-});
-
-export interface IUser {
-  email: string;
-  password: string;
-}
-
-export const loginUser = async ({email, password}: IUser) => {
-  try {
-    const response = await api.post('/login', {email, password});
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to login');
-  }
-};
-
-export const signUpUser = async ({email, password}: IUser) => {
-  try {
-    const response = await api.post('/signup', {email, password});
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to sign up');
-  }
-};
-
-export const refreshAccessToken = async ({
-  refreshToken,
-}: {
-  refreshToken: string;
-}) => {
-  try {
-    const response = await api.post('/refresh-token', {refreshToken});
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to refresh token');
-  }
-};
+import {IUserToken} from '../data/UserTokenInterface';
 
 export const getPosts =
-  (userToken, page, updateAccessToken: (accessToken: string) => void) =>
+  (
+    userToken: IUserToken,
+    page: number,
+    updateAccessToken: (accessToken: string) => void,
+  ) =>
   async (dispatch: Dispatch<any>) => {
     try {
       dispatch(getPostsStart());
@@ -59,7 +22,7 @@ export const getPosts =
         },
       });
       dispatch(getPostsSuccess(response.data));
-    } catch (error) {
+    } catch (error: any) {
       if (error.response && error.response.status === 403) {
         try {
           const refreshedTokenData = await refreshAccessToken({
@@ -74,7 +37,7 @@ export const getPosts =
             },
           });
           dispatch(getPostsSuccess(response.data));
-        } catch (refreshError) {
+        } catch (refreshError: any) {
           dispatch(getPostsFailure(refreshError.message));
         }
       } else {

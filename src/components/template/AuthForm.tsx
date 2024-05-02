@@ -3,10 +3,16 @@ import {StyleSheet, Text, Pressable, View, Image} from 'react-native';
 import InputField from '../molecules/InputField';
 import ButtonWithMessage from '../molecules/ButtonWithMessage';
 
-const AuthForm = ({type, onSubmit, onNavigate, errorMessage}) => {
+interface IProps {
+  type: string;
+  onSubmit: (data: {email: string; password: string}) => void;
+  onNavigate: () => void;
+  errorMessage: string;
+}
+
+const AuthForm = ({type, onSubmit, onNavigate, errorMessage}: IProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleAction = () => {
     onSubmit({email, password});
@@ -16,7 +22,7 @@ const AuthForm = ({type, onSubmit, onNavigate, errorMessage}) => {
     onNavigate();
   };
 
-  const isButtonDisabled = !email || !password || loading;
+  const isButtonDisabled = !email || !password;
 
   return (
     <View style={styles.container}>

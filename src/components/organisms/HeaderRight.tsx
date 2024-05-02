@@ -1,10 +1,19 @@
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {
+  GestureResponderEvent,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const HeaderRight = ({onPress}) => {
+interface IProps {
+  onPress: (event: GestureResponderEvent) => void;
+}
+
+const HeaderRight = ({onPress}: IProps) => {
   return (
-    <View style={{marginRight: 10}}>
+    <View style={styles.header}>
       <TouchableOpacity onPress={onPress}>
         <Ionicons name="person" size={24} color="black" />
       </TouchableOpacity>
@@ -13,3 +22,9 @@ const HeaderRight = ({onPress}) => {
 };
 
 export default HeaderRight;
+
+const styles = StyleSheet.create({
+  header: {
+    marginRight: 10,
+  },
+});

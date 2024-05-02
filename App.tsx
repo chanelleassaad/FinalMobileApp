@@ -15,15 +15,15 @@ function App(): React.JSX.Element {
   }, []);
 
   return (
-    <AuthProvider>
-      <Provider store={store}>
+    <Provider store={store}>
+      <AuthProvider>
         <SafeAreaView style={styles.container}>
           <NavigationContainer>
             <RootNavigator />
           </NavigationContainer>
         </SafeAreaView>
-      </Provider>
-    </AuthProvider>
+      </AuthProvider>
+    </Provider>
   );
 }
 

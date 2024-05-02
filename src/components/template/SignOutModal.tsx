@@ -1,11 +1,22 @@
 import React from 'react';
 import {Modal, View, Text, Button, Image, StyleSheet} from 'react-native';
 import {useAuth} from '../../store/authentication/AuthContext';
+import {useDispatch, useSelector} from 'react-redux';
+import {resetPosts} from '../../store/PostsReducer';
 
-const SignOutModal = ({isVisible, toggleModal}) => {
-  const {signOut, userToken} = useAuth();
+interface IProps {
+  isVisible: boolean;
+  toggleModal: () => void;
+}
+
+const SignOutModal = ({isVisible, toggleModal}: IProps) => {
+  const {userToken} = useSelector((state: any) => state.auth);
+  const {signOut} = useAuth();
+  const dispatch = useDispatch();
+
   const logout = async () => {
     await signOut();
+    dispatch(resetPosts());
   };
 
   return (

@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import RefreshIndicator from '../atoms/RefreshIndicator';
+import {IResult} from '../../data/RootInterface';
 
-const NewsImage = ({post}) => {
+const NewsImage = ({post}: {post: IResult}) => {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
@@ -12,7 +13,7 @@ const NewsImage = ({post}) => {
           {isLoading && <RefreshIndicator />}
           <Image
             source={{
-              uri: post?.image_url ?? 'https://picsum.photos/800',
+              uri: post?.image_url,
               cache: 'force-cache',
             }}
             resizeMode={'cover'}

@@ -2,8 +2,9 @@ import moment from 'moment';
 import React from 'react';
 import {Text, Image, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {IResult} from '../../data/RootInterface';
 
-const NewsPostGradient = ({post}) => {
+const NewsPostGradient = ({post}: {post: IResult}) => {
   return (
     <LinearGradient
       colors={['#0000', '#000A', '#000']}

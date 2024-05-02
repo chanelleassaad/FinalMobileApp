@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import NewsScreen from '../screens/NewsScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import HeaderRight from '../components/organisms/HeaderRight';
-import SignOutModal from '../components/organisms/SignOutModal';
+import SignOutModal from '../components/template/SignOutModal';
 
 const Tab = createNativeStackNavigator();
 
@@ -14,14 +14,16 @@ const AuthNav = () => {
     setIsModalVisible(!isModalVisible);
   };
 
+  const headerUser = () => <HeaderRight onPress={toggleModal} />;
+
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.nav}>
       <Tab.Navigator>
         <Tab.Screen
           name="CA News"
           component={NewsScreen}
           options={{
-            headerRight: () => <HeaderRight onPress={toggleModal} />,
+            headerRight: headerUser,
           }}
         />
       </Tab.Navigator>
@@ -31,3 +33,9 @@ const AuthNav = () => {
 };
 
 export default AuthNav;
+
+const styles = StyleSheet.create({
+  nav: {
+    flex: 1,
+  },
+});

@@ -1,12 +1,19 @@
 import React from 'react';
 import {Text, Pressable, StyleSheet} from 'react-native';
 
+interface IButtonProps {
+  handleOnPress: () => void;
+  isButtonDisabled: boolean;
+  label: string;
+  errorMessage?: string;
+}
+
 const ButtonWithMessage = ({
   handleOnPress,
   isButtonDisabled,
   label,
   errorMessage,
-}) => {
+}: IButtonProps) => {
   return (
     <>
       <Pressable

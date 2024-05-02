@@ -1,15 +1,12 @@
-import React, {useMemo} from 'react';
-import {useReducer, useEffect} from 'react';
-import * as Keychain from 'react-native-keychain';
+import React, {useEffect, useMemo} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import AuthContext from './AuthContext';
-import authReducer from './AuthReducer';
+import * as Keychain from 'react-native-keychain';
+import {restoreToken, signIn, signOut, updateAccessToken} from './AuthReducer';
 
-const AuthProvider = ({children}) => {
-  const [state, dispatch] = useReducer(authReducer, {
-    isLoading: true,
-    isSignout: false,
-    userToken: null,
-  });
+const AuthProvider = ({children}: {children: React.ReactNode}) => {
+  const dispatch = useDispatch();
+  const {userToken} = useSelector((state: any) => state.auth);
 
   useEffect(() => {
     const bootstrapAsync = async () => {
@@ -22,34 +19,41 @@ const AuthProvider = ({children}) => {
       } catch (e) {
         throw e;
       }
-      dispatch({type: 'RESTORE_TOKEN', token: userToken});
+      dispatch(restoreToken(userToken));
     };
     bootstrapAsync();
-  }, []);
+  }, [dispatch]);
 
-  const authContext = useMemo(() => ({
-    signIn: async (email, accessToken, refreshToken) => {
-      const token = {email, accessToken, refreshToken};
-      await Keychain.setGenericPassword('userToken', JSON.stringify(token));
-      dispatch({type: 'SIGN_IN', token});
-    },
-    signOut: async () => {
-      await Keychain.resetGenericPassword();
-      dispatch({type: 'SIGN_OUT'});
-    },
-    updateAccessToken: async accessToken => {
-      const {email, refreshToken} = state.userToken;
-      const updatedToken = {email, accessToken, refreshToken};
-      await Keychain.setGenericPassword(
-        'userToken',
-        JSON.stringify(updatedToken),
-      );
-      dispatch({type: 'UPDATE_ACCESS_TOKEN', accessToken});
-    },
-  }));
+  const authContext = useMemo(
+    () => ({
+      signIn: async (
+        email: string,
+        accessToken: string,
+        refreshToken: string,
+      ) => {
+        const token = {email, accessToken, refreshToken};
+        await Keychain.setGenericPassword('userToken', JSON.stringify(token));
+        dispatch(signIn(token));
+      },
+      signOut: async () => {
+        await Keychain.resetGenericPassword();
+        dispatch(signOut());
+      },
+      updateAccessToken: async (accessToken: string) => {
+        const {email, refreshToken} = userToken;
+        const updatedToken = {email, accessToken, refreshToken};
+        await Keychain.setGenericPassword(
+          'userToken',
+          JSON.stringify(updatedToken),
+        );
+        dispatch(updateAccessToken(accessToken));
+      },
+    }),
+    [dispatch, userToken],
+  );
 
   return (
-    <AuthContext.Provider value={{...state, ...authContext}}>
+    <AuthContext.Provider value={{...authContext}}>
       {children}
     </AuthContext.Provider>
   );

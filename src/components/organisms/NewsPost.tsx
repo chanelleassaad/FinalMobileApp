@@ -1,20 +1,57 @@
-import React from 'react';
-import {StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, TouchableOpacity, Platform, Animated} from 'react-native';
 import NewsPostGradient from '../molecules/NewsPostGradient';
 import NewsImage from '../molecules/NewsImage';
+import PostModal from '../template/PostModal';
+import {IResult} from '../../data/RootInterface';
 
-const NewsPost = ({post}) => {
+const NewsPost = ({post}: {post: IResult}) => {
+  const [animation] = useState(new Animated.Value(1));
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  const handlePressIn = () => {
+    Animated.spring(animation, {
+      toValue: 0.8,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(animation, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+    setIsModalVisible(true);
+  };
+
   return (
-    <TouchableOpacity activeOpacity={1} style={styles.container}>
-      <NewsImage post={post} />
-      <NewsPostGradient post={post} />
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        activeOpacity={1}>
+        <Animated.View
+          style={[styles.container, {transform: [{scale: animation}]}]}>
+          <NewsImage post={post} />
+          <NewsPostGradient post={post} />
+        </Animated.View>
+      </TouchableOpacity>
+      <PostModal
+        isVisible={isModalVisible}
+        toggleModal={toggleModal}
+        post={post}
+      />
+    </>
   );
 };
 
 export default NewsPost;
 
-const boxShadow: any = Platform.select({
+const boxShadow = Platform.select({
   ios: {
     shadowColor: '#000',
     shadowOffset: {

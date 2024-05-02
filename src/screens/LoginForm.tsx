@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import AuthForm from '../components/template/AuthForm';
-import {IUser, loginUser} from '../config/BackendApi';
 import {useAuth} from '../store/authentication/AuthContext';
+import {IUser, loginUser} from '../config/UserApi';
 
-const LoginForm = ({navigation}) => {
+const LoginForm = ({navigation}: {navigation: any}) => {
   const [errorMessage, setErrorMessage] = useState('');
   const {signIn} = useAuth();
 
@@ -17,7 +17,7 @@ const LoginForm = ({navigation}) => {
       const {accessToken, refreshToken} = res;
       await signIn(email, accessToken, refreshToken);
       setErrorMessage('');
-    } catch (error) {
+    } catch (error: any) {
       setErrorMessage(error.message);
     }
   };
