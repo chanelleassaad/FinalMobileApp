@@ -1,5 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Text, ActivityIndicator, FlatList, RefreshControl} from 'react-native';
+import {
+  Text,
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import NewsPost from '../components/organisms/NewsPost';
 import {useAuth} from '../store/authentication/AuthContext';
@@ -41,7 +47,7 @@ const NewsScreen = () => {
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await setAllPosts([]);
-    setPage(1);
+    page === 1 ? fetchPosts() : setPage(1);
   }, []);
 
   const onEndReached = () => {
@@ -52,11 +58,8 @@ const NewsScreen = () => {
   };
 
   const renderItem = ({item}: {item: IResult}) => <NewsPost post={item} />;
-  const renderLoadMore = () => loadMore && <ActivityIndicator />;
-
-  if (loading && allPosts.length === 0) {
-    return <ActivityIndicator />;
-  }
+  const renderLoadMore = () =>
+    loadMore && <ActivityIndicator style={styles.refresh} />;
 
   if (error) {
     return <Text>Error: {error}</Text>;
@@ -78,3 +81,9 @@ const NewsScreen = () => {
 };
 
 export default NewsScreen;
+
+const styles = StyleSheet.create({
+  refresh: {
+    marginTop: 20,
+  },
+});
