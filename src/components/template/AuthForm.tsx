@@ -1,7 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, Pressable, View, Image} from 'react-native';
 import InputField from '../molecules/InputField';
 import ButtonWithMessage from '../molecules/ButtonWithMessage';
+import {Formik} from 'formik';
+import {loginValidationSchema} from '../../validationSchemas/logInValidationSchema';
+import {signUpValidationSchema} from '../../validationSchemas/signUpValidationSchema';
 
 interface IProps {
   type: string;
@@ -11,60 +14,72 @@ interface IProps {
 }
 
 const AuthForm = ({type, onSubmit, onNavigate, errorMessage}: IProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleAction = () => {
-    onSubmit({email, password});
-  };
-
   const handleNavigate = () => {
     onNavigate();
   };
 
-  const isButtonDisabled = !email || !password;
-
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.image}
-        source={require('../../assets/icon.png')}
-        resizeMode="contain"
-      />
+    <Formik
+      initialValues={{email: '', password: ''}}
+      validationSchema={
+        type === 'login' ? loginValidationSchema : signUpValidationSchema
+      }
+      onSubmit={(values, {setSubmitting}) => {
+        onSubmit(values);
+        setSubmitting(false);
+      }}>
+      {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
+        <View style={styles.container}>
+          <Image
+            style={styles.image}
+            source={require('../../assets/icon.png')}
+            resizeMode="contain"
+          />
 
-      <InputField
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Enter your email"
-      />
+          <InputField
+            label="Email Address"
+            placeholder="Please enter your Email Address"
+            onChangeText={handleChange('email')}
+            onBlur={handleBlur('email')}
+            value={values.email}
+            keyboardType="email-address"
+          />
+          {errors.email && touched.email && (
+            <Text style={styles.errorText}>{errors.email}</Text>
+          )}
 
-      <InputField
-        label="Password"
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Enter your password"
-        secureTextEntry
-      />
+          <InputField
+            label="Password"
+            placeholder="Please enter your Password"
+            onChangeText={handleChange('password')}
+            onBlur={handleBlur('password')}
+            value={values.password}
+            secureTextEntry
+          />
+          {errors.password && touched.password && (
+            <Text style={styles.errorText}>{errors.password}</Text>
+          )}
 
-      <ButtonWithMessage
-        handleOnPress={handleAction}
-        isButtonDisabled={isButtonDisabled}
-        label={type === 'login' ? 'LOGIN' : 'SIGN UP'}
-        errorMessage={errorMessage}
-      />
+          <ButtonWithMessage
+            handleOnPress={handleSubmit}
+            isButtonDisabled={!values.email || !values.password}
+            label={type === 'login' ? 'LOGIN' : 'SIGN UP'}
+            errorMessage={errorMessage}
+          />
 
-      <Text style={styles.footerText}>
-        {type === 'login'
-          ? "Don't Have an Account?"
-          : 'Already Have an Account?'}
-        <Pressable onPress={handleNavigate}>
-          <Text style={styles.signup}>
-            {type === 'login' ? ' Sign Up' : ' Login'}
+          <Text style={styles.footerText}>
+            {type === 'login'
+              ? "Don't Have an Account?"
+              : 'Already Have an Account?'}
+            <Pressable onPress={handleNavigate}>
+              <Text style={styles.signup}>
+                {type === 'login' ? ' Sign Up' : ' Login'}
+              </Text>
+            </Pressable>
           </Text>
-        </Pressable>
-      </Text>
-    </View>
+        </View>
+      )}
+    </Formik>
   );
 };
 
@@ -91,5 +106,9 @@ const styles = StyleSheet.create({
     color: '#21618C',
     fontSize: 13,
     textDecorationLine: 'underline',
+  },
+  errorText: {
+    fontSize: 10,
+    color: 'red',
   },
 });
