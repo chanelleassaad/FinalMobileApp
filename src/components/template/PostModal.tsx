@@ -50,7 +50,7 @@ const NewsPopup = ({isVisible, post, toggleModal}: IProps) => {
               </>
             )}
           </View>
-          <View style={styles.details}>
+          <View style={styles.imageDetails}>
             {post.creator && post.creator[0] !== '' && (
               <Text style={styles.creator}>by {post.creator.join(', ')}</Text>
             )}
@@ -60,23 +60,25 @@ const NewsPopup = ({isVisible, post, toggleModal}: IProps) => {
               </Text>
             )}
           </View>
-          {post.description && (
-            <ScrollView style={styles.descriptionContainer}>
-              <Text
-                style={[
-                  styles.description,
-                  {textAlign: isArabic ? 'right' : 'left'},
-                ]}>
-                {post.description.replace(/nbsp;/g, '')}
-              </Text>
-            </ScrollView>
-          )}
-          <View style={styles.moreDetails}>
-            <Text>More details on</Text>
-            <TouchableOpacity onPress={() => Linking.openURL(post.link)}>
-              <Text style={styles.link}>{post.link}</Text>
-            </TouchableOpacity>
-          </View>
+          <ScrollView>
+            {post.description && (
+              <View style={styles.descriptionContainer}>
+                <Text
+                  style={[
+                    styles.description,
+                    {textAlign: isArabic ? 'right' : 'left'},
+                  ]}>
+                  {post.description.replace(/nbsp;/g, '')}
+                </Text>
+              </View>
+            )}
+            <View style={styles.moreDetails}>
+              <Text>More details on</Text>
+              <TouchableOpacity onPress={() => Linking.openURL(post.link)}>
+                <Text style={styles.link}>{post.link}</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
       </View>
     </Modal>
@@ -88,7 +90,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 20,
-    marginTop: 30,
+    marginTop: 25,
+    marginBottom: 50,
   },
   header: {
     flexDirection: 'row',
@@ -99,30 +102,30 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 5,
   },
-  allData: {
-    backgroundColor: '#bfcdea',
-    height: '83%',
-    padding: 20,
-  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     flex: 1,
   },
+  icon: {
+    height: 40,
+    width: 40,
+    marginRight: 10,
+  },
+  allData: {
+    backgroundColor: '#bfcdea',
+    height: '83%',
+    padding: 10,
+    borderRadius: 5,
+  },
   imageContainer: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginVertical: 10,
   },
   imageDisplay: {
     width: '100%',
     height: 200,
   },
-  icon: {
-    height: 30,
-    width: 30,
-    marginRight: 10,
-  },
-  details: {
+  imageDetails: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
@@ -136,14 +139,13 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     maxHeight: 200,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   description: {
     fontSize: 16,
   },
   moreDetails: {
     flex: 1,
-    bottom: 0,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },

@@ -40,13 +40,17 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
         dispatch(signOut());
       },
       updateAccessToken: async (accessToken: string) => {
-        const {refreshToken} = userToken;
-        const updatedToken = {accessToken, refreshToken};
-        await Keychain.setGenericPassword(
-          'userToken',
-          JSON.stringify(updatedToken),
-        );
-        dispatch(updateAccessToken(accessToken));
+        if (!userToken) {
+          dispatch(signOut());
+        } else {
+          const {refreshToken} = userToken;
+          const updatedToken = {accessToken, refreshToken};
+          await Keychain.setGenericPassword(
+            'userToken',
+            JSON.stringify(updatedToken),
+          );
+          dispatch(updateAccessToken(accessToken));
+        }
       },
     }),
     [dispatch, userToken],

@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React from 'react';
-import {Text, Image, StyleSheet} from 'react-native';
+import {Text, Image, StyleSheet, Platform} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {IResult} from '../../interfaces/RootInterface';
 
@@ -9,11 +9,13 @@ const NewsPostGradient = ({post}: {post: IResult}) => {
     <LinearGradient
       colors={['#0000', '#000A', '#000']}
       style={styles.titleContainer}>
-      <Image
-        style={styles.imageIcon}
-        source={{uri: post.source_icon}}
-        resizeMode="contain"
-      />
+      {Platform.OS === 'ios' ? (
+        <Image
+          style={styles.imageIcon}
+          source={{uri: post.source_icon}}
+          resizeMode="contain"
+        />
+      ) : null}
 
       <Text style={styles.text}>{post?.title}</Text>
       <Text style={styles.timestamp}>
