@@ -15,7 +15,7 @@ import {IResult} from '../interfaces/RootInterface';
 
 const NewsScreen = () => {
   const dispatch = useDispatch();
-  const {posts, loading, error} = useSelector((state: any) => state.posts);
+  const {posts, error} = useSelector((state: any) => state.posts);
   const {userToken} = useSelector((state: any) => state.auth);
   const {updateAccessToken} = useAuth();
 
@@ -34,6 +34,13 @@ const NewsScreen = () => {
   useEffect(() => {
     fetchPosts();
   }, [fetchPosts]);
+
+  useEffect(() => {
+    // Clear allPosts when error occurs
+    if (error) {
+      setAllPosts([]);
+    }
+  }, [error]);
 
   useEffect(() => {
     if (posts && posts.results) {
