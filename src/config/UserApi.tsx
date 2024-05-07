@@ -1,9 +1,8 @@
 import axios from 'axios';
-
-const baseUrl = 'https://backend-practice.euriskomobility.me/';
+import Config from 'react-native-config';
 
 export const api = axios.create({
-  baseURL: baseUrl,
+  baseURL: Config.API_URL,
 });
 
 export interface IUser {
